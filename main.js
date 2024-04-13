@@ -17,7 +17,7 @@ window.onload = () => {
                 bodyTextarea.value = "- 問題：\n    - 原因：\n    - 解決方式：";
                 break;
             default:
-                bodyTextarea.value = "test";
+                bodyTextarea.value = "";
         }
     });
     // 產生語法
