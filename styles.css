@@ -2,16 +2,17 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 20px;
-  background-color: #f7f7f7;
+  background-color: #121212;
+  color: #ffffff;
 }
 
 .container {
   max-width: 800px;
   margin: auto;
-  background-color: white;
+  background-color: #1e1e1e;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
 h1 {
@@ -22,12 +23,15 @@ select,
 input,
 textarea,
 button {
-  width: 100%; /* 宽度设置为 100% */
-  padding: 10px; /* 内边距为 10px */
+  width: 100%;
+  padding: 10px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  box-sizing: border-box;
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444;
 }
 
 button {
@@ -70,14 +74,14 @@ pre {
 
 #body,
 #commit-message {
-  width: 100%; /* 让 textarea 宽度自适应容器 */
-  min-height: 180px; /* 设置一个最小高度 */
-  height: auto; /* 高度自适应内容 */
-  resize: vertical; /* 允许垂直调整大小 */
+  width: 100%;
+  min-height: 180px;
+  height: auto;
+  resize: vertical;
   box-sizing: border-box;
+  background: #2a2a2a;
 }
 
-/* Media query for smaller screens */
 @media (max-width: 600px) {
   .container {
     width: 100%;
