@@ -1,62 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="git.png" />
-    <title>Git-Tool</title>
+    <title>Git Commit Message Helper - 規範化 Commit 工具</title>
+    <!-- Google Fonts: Outfit (UI) & JetBrains Mono (Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="background-glow"></div>
     <div class="container">
-      <div>
-        <select id="commit-type">
-          <!-- 可以新增不同選項 -->
-          <option value="" disabled selected>請選擇 Git 類型</option>
-          <option value="feat">（feat）新增功能</option>
-          <option value="modify">（modify）既有功能依照需求調整的修改</option>
-          <option value="fix">（fix）修復 bug</option>
-          <option value="docs">（docs）新增或修改文件</option>
-          <option value="style">
-            （style）格式,不影響程式碼運行的變動，例如程式碼格式調整（formatting）、缺少分號（missingsemi
-            colons）等
-          </option>
-          <option value="refactor">
-            （refactor）重構, 針對已上線的功能程式碼調整與優化，且未改變現有邏輯
-          </option>
-          <option value="perf">（perf）改善效能（improves performance）</option>
-          <option value="test">（test）增加或修改測試</option>
-          <option value="chore">
-            （chore）maintain,
-            不影響程式碼運行，建構程序或輔助工具的變動，例如更新專案建置設定、更新版本號
-          </option>
-          <option value="revert">
-            （revert）撤銷回覆先前的 commit, 例如：revert：type(scope):subject
-            (回覆版本：xxxx)
-          </option>
-        </select>
-      </div>
-      <div>
-        <input id="title" type="text" placeholder="在此輸入標題" />
-      </div>
-      <div>
-        <textarea id="body" rows="10"> </textarea>
-      </div>
-      <div>
-        <input id="resolves" type="text" value="Resolves: #" />
-      </div>
-      <div>
-        <input id="seeAlso" type="text" value="See also: #" />
-      </div>
-      <button id="generate">建立 Commit</button>
+      <header class="app-header">
+        <div class="logo">
+          <svg
+            viewBox="0 0 24 24"
+            width="32"
+            height="32"
+            stroke="currentColor"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="git-icon"
+          >
+            <circle cx="18" cy="18" r="3"></circle>
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="6" cy="18" r="3"></circle>
+            <path d="M18 18h-6c-1.1 0-2-.9-2-2V8"></path>
+            <path d="M6 12V9c0-1.1.9-2 2-2h2"></path>
+          </svg>
+          <h1>Git Commit Helper</h1>
+        </div>
+      </header>
 
-      <h3>Commit：</h3>
-      <pre id="commit-message"></pre>
+      <main class="main-content">
+        <section class="form-section glass-panel">
+          <div class="row">
+            <div class="col">
+              <label for="commit-type">類型 (Type)</label>
+              <select id="commit-type">
+                <option value="" disabled selected>請選擇 Git 類型</option>
+                <option value="feat">（feat）新增功能</option>
+                <option value="modify">（modify）既有功能需求調整</option>
+                <option value="fix">（fix）修復 Bug</option>
+                <option value="docs">（docs）文件撰寫與修改</option>
+                <option value="style">
+                  （style）程式碼格式調整 (不影響功能)
+                </option>
+                <option value="refactor">
+                  （refactor）重構 (不影響功能與既有邏輯)
+                </option>
+                <option value="perf">（perf）改善效能</option>
+                <option value="test">（test）新增或修改測試</option>
+                <option value="chore">
+                  （chore）建置工具、輔助程式或版本更新
+                </option>
+                <option value="revert">
+                  （revert）撤銷或回復先前的 Commit
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="scope">影響範圍 (Scope)</label>
+              <input
+                id="scope"
+                type="text"
+                placeholder="例如: auth, ui, api (選填)"
+              />
+            </div>
+          </div>
 
-      <button id="copy">按我複製</button>
-      <span id="copy-notification" style="display: none">複製成功～</span>
+          <div class="form-group">
+            <label for="title">標題 (Subject)</label>
+            <input
+              id="title"
+              type="text"
+              placeholder="在此輸入簡短標題 (建議 50 字內)"
+            />
+          </div>
 
-      <script src="main.js"></script>
+          <div class="form-group">
+            <label for="body">內文描述 (Body)</label>
+            <textarea
+              id="body"
+              rows="8"
+              placeholder="選擇類型後將自動帶入對應模板，您也可以手動編輯。"
+            ></textarea>
+          </div>
+
+          <div class="footer-inputs-grid">
+            <div class="form-group">
+              <label for="clickUp">ClickUp 任務 ID</label>
+              <input id="clickUp" type="text" value="CU-" />
+            </div>
+            <div class="form-group">
+              <label for="resolves">Resolves</label>
+              <input id="resolves" type="text" value="Resolves: #" />
+            </div>
+            <div class="form-group">
+              <label for="seeAlso">See also</label>
+              <input id="seeAlso" type="text" value="See also: #" />
+            </div>
+          </div>
+
+          <button id="generate" style="display: none">建立 Commit</button>
+        </section>
+
+        <section class="preview-section glass-panel">
+          <div class="preview-header">
+            <h3>Git 指令預覽</h3>
+          </div>
+
+          <div class="terminal-box">
+            <div class="terminal-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="terminal-title">commit.txt</span>
+            </div>
+            <pre id="commit-message"></pre>
+          </div>
+
+          <div class="actions-row">
+            <button id="copy" class="btn-primary">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                stroke="currentColor"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="copy-icon"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                ></path>
+              </svg>
+              <span>複製內容</span>
+            </button>
+            <span id="copy-notification" class="toast-notification"
+              >複製成功！已存至剪貼簿 ✨</span
+            >
+          </div>
+        </section>
+      </main>
     </div>
+
+    <script src="main.js"></script>
   </body>
 </html>
